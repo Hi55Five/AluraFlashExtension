@@ -1,26 +1,16 @@
-// ========== AUTOMAÇÃO ALURA - PARA APENAS AO FECHAR GUIA ==========
+// ========== AUTOMAÇÃO ALURA - PERSISTENTE EM RECARREGAMENTOS ==========
 (function() {
     'use strict';
     
     // ========== VERIFICAÇÃO DE EXECUÇÃO ==========
-    // Se já está rodando, não executa novamente
-    if (window.aluraAutomationRunning) {
-        console.log('🔄 AUTOMAÇÃO JÁ ESTÁ RODANDO - Ignorando nova instância');
-        return;
-    }
+    // Usar sessionStorage para persistir entre recarregamentos
+    const isRunning = sessionStorage.getItem('aluraAutoRunning') === 'true';
     
-    // Marcar como rodando
-    window.aluraAutomationRunning = true;
-    
-    // ========== SISTEMA DE VIDA ÚTIL ==========
-    // Flag que sobrevive a recarregamentos mas morre ao fechar guia
-    if (!sessionStorage.getItem('aluraAutoStartTime')) {
-        sessionStorage.setItem('aluraAutoStartTime', Date.now().toString());
-        console.log('🚀 AUTOMAÇÃO INICIADA - Dura até fechar a guia');
+    if (isRunning) {
+        console.log('🔄 AUTOMAÇÃO REINICIADA - Continuando de onde parou...');
     } else {
-        const startTime = parseInt(sessionStorage.getItem('aluraAutoStartTime'));
-        const uptime = Math.round((Date.now() - startTime) / 1000);
-        console.log(`🔄 AUTOMAÇÃO REINICIADA - Rodando há ${uptime}s`);
+        sessionStorage.setItem('aluraAutoRunning', 'true');
+        console.log('🚀 AUTOMAÇÃO INICIADA - Sobrevive a recarregamentos!');
     }
     
     // ========== DETECÇÃO DE ATIVIDADE ==========
@@ -182,6 +172,8 @@
         
         if (nextButton) {
             console.log('✅ Indo para próxima atividade...');
+            // Manter a flag ativa ANTES de clicar (importante!)
+            sessionStorage.setItem('aluraAutoRunning', 'true');
             nextButton.click();
         } else {
             console.log('❌ Botão próximo não encontrado, tentando novamente em 5s...');
@@ -191,10 +183,9 @@
     
     // ========== EXECUÇÃO PRINCIPAL ==========
     function executeAutomation() {
-        // Verificar se ainda está na mesma sessão
-        if (!sessionStorage.getItem('aluraAutoStartTime')) {
-            console.log('🛑 SESSÃO FINALIZADA - Automação parou');
-            window.aluraAutomationRunning = false;
+        // Verificar se a automação ainda está ativa
+        if (sessionStorage.getItem('aluraAutoRunning') !== 'true') {
+            console.log('🛑 AUTOMAÇÃO PARADA - Não continuando');
             return;
         }
         
@@ -216,25 +207,16 @@
     
     // ========== CONTROLES ==========
     window.startAlurexAutomation = function() {
-        if (!sessionStorage.getItem('aluraAutoStartTime')) {
-            sessionStorage.setItem('aluraAutoStartTime', Date.now().toString());
-        }
-        console.log('🚀 INICIANDO/RECONTINUANDO AUTOMAÇÃO');
+        sessionStorage.setItem('aluraAutoRunning', 'true');
+        console.log('🚀 INICIANDO AUTOMAÇÃO');
         executeAutomation();
     }
     
     window.stopAlurexAutomation = function() {
-        sessionStorage.removeItem('aluraAutoStartTime');
-        window.aluraAutomationRunning = false;
-        console.log('🛑 AUTOMAÇÃO PARADA MANUALMENTE - Sessão finalizada');
-        alert('Alurex parado! Feche e abra a guia para reiniciar.');
+        sessionStorage.setItem('aluraAutoRunning', 'false');
+        console.log('🛑 AUTOMAÇÃO PARADA - Não reiniciará mais');
+        alert('Alurex parado! Recarregue a página para reiniciar.');
     }
-    
-    // ========== DETECTOR DE FECHAMENTO DE GUIA ==========
-    window.addEventListener('beforeunload', function() {
-        // Limpa a sessionStorage quando a guia for fechada
-        sessionStorage.removeItem('aluraAutoStartTime');
-    });
     
     // ========== INICIAR AUTOMATICAMENTE ==========
     console.log(`
@@ -244,11 +226,12 @@ Comandos:
 • startAlurexAutomation() - Iniciar/Continuar
 • stopAlurexAutomation() - Parar completamente
 
-A automação continuará até você fechar esta guia!
+Status: ${isRunning ? 'CONTINUANDO' : 'INICIANDO'}
     `);
     
-    // Iniciar automaticamente se ainda estiver na mesma sessão
-    if (sessionStorage.getItem('aluraAutoStartTime')) {
+    // Iniciar automaticamente se ainda estiver ativo
+    if (sessionStorage.getItem('aluraAutoRunning') === 'true') {
+        console.log('🔄 Continuando automação após recarregamento...');
         setTimeout(executeAutomation, 2000);
     }
     
