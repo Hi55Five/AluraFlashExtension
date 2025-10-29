@@ -1,17 +1,27 @@
-// ========== AUTOMAÇÃO ALURA AUTO-REINICIANTE ==========
+// ========== AUTOMAÇÃO ALURA - PARA APENAS AO FECHAR GUIA ==========
 (function() {
     'use strict';
     
-    // Verificar se já existe uma automação rodando
-    if (sessionStorage.getItem('aluraAutoRestart') === 'true') {
-        console.log('🔄 AUTOMAÇÃO REINICIADA - Continuando...');
-        setTimeout(executeAutomation, 2000);
+    // ========== VERIFICAÇÃO DE EXECUÇÃO ==========
+    // Se já está rodando, não executa novamente
+    if (window.aluraAutomationRunning) {
+        console.log('🔄 AUTOMAÇÃO JÁ ESTÁ RODANDO - Ignorando nova instância');
         return;
     }
     
-    // ========== CONFIGURAÇÃO INICIAL ==========
-    sessionStorage.setItem('aluraAutoRestart', 'true');
-    console.log('🚀 AUTOMAÇÃO INICIADA - Sobreviverá aos recarregamentos!');
+    // Marcar como rodando
+    window.aluraAutomationRunning = true;
+    
+    // ========== SISTEMA DE VIDA ÚTIL ==========
+    // Flag que sobrevive a recarregamentos mas morre ao fechar guia
+    if (!sessionStorage.getItem('aluraAutoStartTime')) {
+        sessionStorage.setItem('aluraAutoStartTime', Date.now().toString());
+        console.log('🚀 AUTOMAÇÃO INICIADA - Dura até fechar a guia');
+    } else {
+        const startTime = parseInt(sessionStorage.getItem('aluraAutoStartTime'));
+        const uptime = Math.round((Date.now() - startTime) / 1000);
+        console.log(`🔄 AUTOMAÇÃO REINICIADA - Rodando há ${uptime}s`);
+    }
     
     // ========== DETECÇÃO DE ATIVIDADE ==========
     function detectActivityType() {
@@ -34,7 +44,6 @@
             console.log('✅ Play clicado');
         }
         
-        // Aguardar e ir para próxima
         setTimeout(() => {
             goToNextActivity();
         }, 4000);
@@ -173,8 +182,6 @@
         
         if (nextButton) {
             console.log('✅ Indo para próxima atividade...');
-            // Manter a flag ativa antes de clicar
-            sessionStorage.setItem('aluraAutoRestart', 'true');
             nextButton.click();
         } else {
             console.log('❌ Botão próximo não encontrado, tentando novamente em 5s...');
@@ -184,6 +191,13 @@
     
     // ========== EXECUÇÃO PRINCIPAL ==========
     function executeAutomation() {
+        // Verificar se ainda está na mesma sessão
+        if (!sessionStorage.getItem('aluraAutoStartTime')) {
+            console.log('🛑 SESSÃO FINALIZADA - Automação parou');
+            window.aluraAutomationRunning = false;
+            return;
+        }
+        
         const activityType = detectActivityType();
         console.log(`📊 Atividade detectada: ${activityType.toUpperCase()}`);
         
@@ -201,30 +215,40 @@
     }
     
     // ========== CONTROLES ==========
-    window.startAluraAutomation = function() {
-        sessionStorage.setItem('aluraAutoRestart', 'true');
-        console.log('🚀 INICIANDO AUTOMAÇÃO AUTO-REINICIANTE');
+    window.startAlurexAutomation = function() {
+        if (!sessionStorage.getItem('aluraAutoStartTime')) {
+            sessionStorage.setItem('aluraAutoStartTime', Date.now().toString());
+        }
+        console.log('🚀 INICIANDO/RECONTINUANDO AUTOMAÇÃO');
         executeAutomation();
     }
     
-    window.stopAluraAutomation = function() {
-        sessionStorage.setItem('aluraAutoRestart', 'false');
-        console.log('🛑 AUTOMAÇÃO PARADA - Não reiniciará mais');
+    window.stopAlurexAutomation = function() {
+        sessionStorage.removeItem('aluraAutoStartTime');
+        window.aluraAutomationRunning = false;
+        console.log('🛑 AUTOMAÇÃO PARADA MANUALMENTE - Sessão finalizada');
+        alert('Alurex parado! Feche e abra a guia para reiniciar.');
     }
+    
+    // ========== DETECTOR DE FECHAMENTO DE GUIA ==========
+    window.addEventListener('beforeunload', function() {
+        // Limpa a sessionStorage quando a guia for fechada
+        sessionStorage.removeItem('aluraAutoStartTime');
+    });
     
     // ========== INICIAR AUTOMATICAMENTE ==========
     console.log(`
-🎮 AUTOMAÇÃO ALURA CARREGADA!
+🎮 ALUREX AUTOMATION CARREGADO!
 
 Comandos:
-• startAluraAutomation() - Iniciar
-• stopAluraAutomation() - Parar completamente
+• startAlurexAutomation() - Iniciar/Continuar
+• stopAlurexAutomation() - Parar completamente
 
-A automação sobreviverá aos recarregamentos de página!
+A automação continuará até você fechar esta guia!
     `);
     
-    // Iniciar automaticamente se for a primeira vez
-    if (sessionStorage.getItem('aluraAutoRestart') === 'true') {
+    // Iniciar automaticamente se ainda estiver na mesma sessão
+    if (sessionStorage.getItem('aluraAutoStartTime')) {
         setTimeout(executeAutomation, 2000);
     }
     
