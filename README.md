@@ -33,19 +33,20 @@ A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos 
 
 # 🎯 Características Técnicas #
 Sistema de Detecção Inteligente
-javascript '''
+```javascript
 function detectActivityType() {
     if (document.querySelector('.vjs-big-play-button, video')) return 'video';
     if (document.querySelector('.alternativeList-item-input')) return 'multipla-escolha';
     if (document.querySelector('.blocks')) return 'ordenar-blocos';
     // ... mais detecções
 }
-'''
+```
 Descriptografia de Blocos
-javascript
+```javascript
 // Decodifica Base64 duplo dos blocos
 const firstDecode = atob(correctOrderBase64);
 const finalDecode = atob(firstDecode);
+```
 # ⚠️ Disclaimer #
 Este projeto foi desenvolvido para fins educacionais e de aprendizado em automação web. O uso desta ferramenta deve seguir os Termos de Serviço da plataforma Alura. O autor não se responsabiliza pelo uso indevido da extensão.
 
@@ -55,6 +56,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 * ⭐ Se este projeto foi útil para você, deixe uma estrela no repositório! *
 
 ## Feliz automação! 🚀🎯 ##
+
 
 
 
