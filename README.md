@@ -1,13 +1,14 @@
 # AluraFlash Extension 🚀 #
-* Automação inteligente para cursos da Alura - Conclua cursos automaticamente! *
-
-# 📖 Sobre o Projeto #
-A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos na plataforma Alura. Desenvolvida com JavaScript puro, ela identifica e completa automaticamente diferentes tipos de atividades enquanto você foca no que realmente importa.
+* Automação inteligente para cursos da Alura - Conclua cursos automaticamente! 
 
 # ⚠️ Aviso Legal #
 Esta extensão é para fins educacionais. Use por sua própria conta e risco.
 
-✨ Funcionalidades
+
+# 📖 Sobre o Projeto #
+A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos na plataforma Alura. Desenvolvida com JavaScript puro, ela identifica e completa automaticamente diferentes tipos de atividades enquanto você foca no que realmente importa.
+
+# ✨ Funcionalidades #
 🎯 Tipos de Atividades Suportadas
 📹 Vídeos - Reproduz automaticamente e avança
 🔘 Múltipla Escolha - Seleciona todas as alternativas
@@ -16,7 +17,7 @@ Esta extensão é para fins educacionais. Use por sua própria conta e risco.
 🔗 Link de Projeto - Preenche e envia automaticamente
 📷 Texto com Imagem - Avança diretamente
 
-🛠️ Recursos Avançados
+# 🛠️ Recursos Avançados #
 🔄 Sistema Auto-Reiniciante - Sobrevive a recarregamentos de página
 📊 Marca d'Água em Tempo Real - Mostra FPS, MS e status
 🔍 Debug Integrado - Ferramentas para desenvolvimento
@@ -49,14 +50,13 @@ const finalDecode = atob(firstDecode);
 # ⚠️ Disclaimer #
 Este projeto foi desenvolvido para fins educacionais e de aprendizado em automação web. O uso desta ferramenta deve seguir os Termos de Serviço da plataforma Alura. O autor não se responsabiliza pelo uso indevido da extensão.
 
-
-
 # 📄 Licença #
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
-⭐ Se este projeto foi útil para você, deixe uma estrela no repositório!
+* ⭐ Se este projeto foi útil para você, deixe uma estrela no repositório! *
 
-Feliz automação! 🚀🎯
+## Feliz automação! 🚀🎯 ##
+
 
 
 
