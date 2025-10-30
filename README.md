@@ -1,11 +1,11 @@
 # AluraFlash Extension 🚀 #
-* Automação inteligente para cursos da Alura - Conclua cursos automaticamente! 
+**Automação inteligente para cursos da Alura - Conclua cursos automaticamente!**
 
 # ⚠️ Aviso Legal #
-Esta extensão é para fins educacionais. Use por sua própria conta e risco.
+**Esta extensão é para fins educacionais. Use por sua própria conta e risco.**
 
 # 🚀 Instalação #
-** Método 1: Extensão Chrome **
+**Método 1: Extensão Chrome**
 1. **Baixar** Baixe o código do repositório
 2. **Extenção** Abra o Chrome e vá em chrome://extensions/
 3. **Extenção** Ative o "Modo do desenvolvedor" no canto superior direito
@@ -56,6 +56,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 * ⭐ Se este projeto foi útil para você, deixe uma estrela no repositório! *
 
 ## Feliz automação! 🚀🎯 ##
+
 
 
 
