@@ -6,12 +6,12 @@
 
 # 🚀 Instalação #
 **Método 1: Extensão Chrome**
-1. **Baixar** Baixe o código do repositório
-2. **Extenção** Abra o Chrome e vá em chrome://extensions/
-3. **Extenção** Ative o "Modo do desenvolvedor" no canto superior direito
-4. **Extenção** Clique em "Carregar sem compactação"
-5. **Arquivos** Selecione a pasta com os arquivos da extensão
-6. **Seja Feliz** Pronto! A extensão estará instalada
+1. **Baixar** - Baixe o código do repositório
+2. **Extenção** - Abra o Chrome e vá em chrome://extensions/
+3. **Extenção** - Ative o "Modo do desenvolvedor" no canto superior direito
+4. **Extenção** - Clique em "Carregar sem compactação"
+5. **Arquivos** - Selecione a pasta com os arquivos da extensão
+6. **Seja Feliz** - Pronto! A extensão estará instalada
 
 # 📖 Sobre o Projeto #
 A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos na plataforma Alura. Desenvolvida com JavaScript puro, ela identifica e completa automaticamente diferentes tipos de atividades enquanto você foca no que realmente importa.
@@ -56,6 +56,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 * ⭐ Se este projeto foi útil para você, deixe uma estrela no repositório! 
 
 ## Feliz automação! 🚀🎯 ##
+
 
 
 
