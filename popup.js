@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const startBtn = document.getElementById('startBtn');
   const stopBtn = document.getElementById('stopBtn');
+  const debugBtn = document.getElementById('debugBtn');
   const statusDiv = document.getElementById('status');
 
   // Verificar status atual
@@ -9,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (tabs[0] && tabs[0].url.includes('alura.com.br')) {
         chrome.tabs.sendMessage(tabs[0].id, {action: "getStatus"}, function(response) {
           if (chrome.runtime.lastError) {
-            // Content script não respondeu (possivelmente não carregado)
             updateStatus(false);
             return;
           }
@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       } else {
-        // Não está na Alura
         statusDiv.textContent = '⚠️ Acesse a Alura primeiro';
         statusDiv.className = 'status inactive';
         startBtn.disabled = true;
         stopBtn.disabled = true;
+        debugBtn.disabled = true;
       }
     });
   }
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (tabs[0] && tabs[0].url.includes('alura.com.br')) {
         chrome.tabs.sendMessage(tabs[0].id, {action: "startAutomation"}, function(response) {
           if (chrome.runtime.lastError) {
-            console.error('Erro ao iniciar automação:', chrome.runtime.lastError);
             alert('Erro: A página da Alura não carregou corretamente. Recarregue a página e tente novamente.');
             return;
           }
@@ -62,21 +61,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Botão debug
+  debugBtn.addEventListener('click', function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs[0] && tabs[0].url.includes('alura.com.br')) {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "debugDescriptografia"}, function(response) {
+          if (chrome.runtime.lastError) {
+            alert('Erro: Execute o debug apenas em páginas de ordenar blocos!');
+            return;
+          }
+          alert('Debug executado! Verifique o console do navegador (F12)');
+        });
+      } else {
+        alert('Por favor, acesse a Alura primeiro!');
+      }
+    });
+  });
+
   function updateStatus(isActive) {
     if (isActive) {
       statusDiv.textContent = '✅ Automação Ativa';
       statusDiv.className = 'status active';
       startBtn.disabled = true;
       stopBtn.disabled = false;
+      debugBtn.disabled = false;
     } else {
       statusDiv.textContent = '⏹️ Automação Parada';
       statusDiv.className = 'status inactive';
       startBtn.disabled = false;
       stopBtn.disabled = true;
+      debugBtn.disabled = false;
     }
-    
-    // Não fechar o popup automaticamente
-    // setTimeout(() => window.close(), 1000);
   }
 
   // Verificar status quando abrir o popup
