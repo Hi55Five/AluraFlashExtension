@@ -1,52 +1,148 @@
-# Type ⌨️
+# AluraFlash Extension 🚀 #
+Automação inteligente para cursos da Alura - Conclua cursos automaticamente!
 
-**Um Codigo feito para burlar o Redação Paraná e Sites Semelhantes.**
+https://img.shields.io/github/license/_zx.lipe_/aluraflash
+https://img.shields.io/chrome-web-store/v/none
+https://img.shields.io/github/stars/_zx.lipe_/aluraflash?style=social
 
-## Apenas Copie esse codigo e cole no console ou crie uma Bookmack ##
+📖 Sobre o Projeto
+A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos na plataforma Alura. Desenvolvida com JavaScript puro, ela identifica e completa automaticamente diferentes tipos de atividades enquanto você foca no que realmente importa.
 
+⚠️ Aviso Legal: Esta extensão é para fins educacionais. Use por sua própria conta e risco.
 
-```javascript
-// Versão Atualizada
-javascript:(function(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/Hi55Five/Type@main/script.js?'+Date.now();document.head.appendChild(s);})();
-```
+✨ Funcionalidades
+🎯 Tipos de Atividades Suportadas
+📹 Vídeos - Reproduz automaticamente e avança
 
-## 🎯 Como Usar
+🔘 Múltipla Escolha - Seleciona todas as alternativas
 
-**Metodo Favoritos ⭐**
-1. **Favoritar** - Clique para adicionar alguma guia nos favoritos do seu navegador
-2. **Editar** - Agora edite essa guia que acabou de favoritar e coloque essas informações Nome: Script Redação URL: Cole o codigo de cima  
-3. **Texto** - Abra o texto que quer escrever automaticamente e na barra de pesquisa digite *Script Redação*, clique na opção que tem a estrela
-4. **Seja Feliz** - Está feito. Agora curta suas horas livres
+🧩 Ordenar Blocos - Decodifica e ordena corretamente
 
-**Metodo Cosole**
-1. **Codigo** - Copie o codigo acima
-2. **Texto** - Abra no texto que queira escrever automaticamente
-3. **Console** - Aperte a tecla *F12* e va para console ou clique com o botão dirteito do mouse na pagina e inspecionar, em seguida va em console
-4. **Cole** - Cole o codigo e pronto!
-5. **Seja Feliz** - Está feito. Agora curta suas horas livres
+💬 Texto com Opinião - Visualiza opinião do instrutor
 
+🔗 Link de Projeto - Preenche e envia automaticamente
 
-## 🔧 Tecnologias
+📷 Texto com Imagem - Avança diretamente
 
-- **React 18** - Framework principal
-- **CSS3** - Estilização e animações
-- **JavaScript ES6+** - Lógica da aplicação
-- **Local Storage API** - Persistência de dados
-- **Web Vitals** - Métricas de performance
+🛠️ Recursos Avançados
+🔄 Sistema Auto-Reiniciante - Sobrevive a recarregamentos de página
 
-**Ao criar este repositório, concedo permissão para todos usarem meu código. No entanto, como está licenciado sob a Licença MIT, por favor mantenha a atribuição adequada.**
+📊 Marca d'Água em Tempo Real - Mostra FPS, MS e status
 
-Obrigado a todos pelo apoio e contribuições para melhorar o codigo!
+🔍 Debug Integrado - Ferramentas para desenvolvimento
 
-Como dizem no mundo da programação:
-*"A prática leva à perfeição, mas a prática perfeita leva à permanência."*
+🎨 Interface Amigável - Popup com controles intuitivos
 
-## 📄 Licença
+🚀 Instalação
+Método 1: Extensão Chrome (Recomendado)
+Baixe o código do repositório
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Abra o Chrome e vá em chrome://extensions/
 
-Copyright (C) 2024 Hi55Five
+Ative o "Modo do desenvolvedor" no canto superior direito
 
-Este programa é um software livre; você pode redistribuí-lo e/ou modificá-lo sob os termos da Licença MIT. Este programa é distribuído na esperança de que seja útil, mas SEM QUALQUER GARANTIA; sem mesmo a garantia implícita de COMERCIALIZAÇÃO ou ADEQUAÇÃO A UM DETERMINADO FIM. Veja a Licença MIT para mais detalhes.
+Clique em "Carregar sem compactação"
 
-**Feliz Digitação!** 🎯⌨️
+Selecione a pasta com os arquivos da extensão
+
+Pronto! A extensão estará instalada
+
+Método 2: Console do Navegador
+javascript
+// Cole este código no console da Alura
+javascript:(function(){
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/_zx.lipe_/aluraflash@main/content.js?' + Date.now();
+    document.head.appendChild(script);
+})();
+🎮 Como Usar
+Usando a Extensão
+Acesse a plataforma Alura e entre em um curso
+
+Clique no ícone da extensão AluraFlash
+
+Clique em "🚀 Iniciar Automação"
+
+Relaxe e acompanhe o progresso pela marca d'água
+
+Comandos no Console
+javascript
+// Iniciar automação
+startAluraAutomation()
+
+// Parar automação
+stopAluraAutomation()
+
+// Debug da descriptografia
+debugDescriptografiaBlocos()
+
+// Debug avançado de blocos
+debugBlockMatching()
+📁 Estrutura do Projeto
+text
+aluraflash/
+├── manifest.json          # Configuração da extensão
+├── content.js            # Script principal de automação
+├── popup.html            # Interface do popup
+├── popup.js              # Lógica do popup
+├── background.js         # Script de background
+└── README.md             # Este arquivo
+🔧 Tecnologias Utilizadas
+JavaScript ES6+ - Lógica principal da automação
+
+Chrome Extensions API - Integração com navegador
+
+Base64 Decoding - Descriptografia de atividades
+
+DOM Manipulation - Interação com elementos da página
+
+Session Storage - Persistência entre recarregamentos
+
+🎯 Características Técnicas
+Sistema de Detecção Inteligente
+javascript
+function detectActivityType() {
+    if (document.querySelector('.vjs-big-play-button, video')) return 'video';
+    if (document.querySelector('.alternativeList-item-input')) return 'multipla-escolha';
+    if (document.querySelector('.blocks')) return 'ordenar-blocos';
+    // ... mais detecções
+}
+Descriptografia de Blocos
+javascript
+// Decodifica Base64 duplo dos blocos
+const firstDecode = atob(correctOrderBase64);
+const finalDecode = atob(firstDecode);
+⚠️ Disclaimer
+Este projeto foi desenvolvido para fins educacionais e de aprendizado em automação web. O uso desta ferramenta deve seguir os Termos de Serviço da plataforma Alura. O autor não se responsabiliza pelo uso indevido da extensão.
+
+🤝 Contribuindo
+Contribuições são bem-vindas! Sinta-se à vontade para:
+
+Fazer um Fork do projeto
+
+Criar uma branch para sua feature (git checkout -b feature/AmazingFeature)
+
+Commit suas mudanças (git commit -m 'Add some AmazingFeature')
+
+Push para a branch (git push origin feature/AmazingFeature)
+
+Abrir um Pull Request
+
+📄 Licença
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+👨‍💻 Autor
+@zx.lipe - GitHub
+
+Desenvolvido com 💻 e ☕
+
+🎉 Agradecimentos
+À comunidade de desenvolvimento de extensões Chrome
+
+Aos contribuidores de código aberto
+
+Aos testadores e reportadores de bugs
+
+⭐ Se este projeto foi útil para você, deixe uma estrela no repositório!
+
+Feliz automação! 🚀🎯
