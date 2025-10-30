@@ -1,16 +1,127 @@
-// ========== AUTOMAÇÃO ALURA - PERSISTENTE EM RECARREGAMENTOS ==========
+// ========== AUTOMAÇÃO ALURA AUTO-REINICIANTE ==========
 (function() {
     'use strict';
     
-    // ========== VERIFICAÇÃO DE EXECUÇÃO ==========
-    // Usar sessionStorage para persistir entre recarregamentos
-    const isRunning = sessionStorage.getItem('aluraAutoRunning') === 'true';
+    // ========== VARIÁVEIS GLOBAIS ==========
+    let watermarkInitialized = false;
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let fps = 0;
+    let ms = 0;
+    let isAutomationActive = false;
     
-    if (isRunning) {
-        console.log('🔄 AUTOMAÇÃO REINICIADA - Continuando de onde parou...');
-    } else {
-        sessionStorage.setItem('aluraAutoRunning', 'true');
-        console.log('🚀 AUTOMAÇÃO INICIADA - Sobrevive a recarregamentos!');
+    // ========== SISTEMA DE ARMAZENAMENTO ==========
+    function getStorageKey() {
+        return 'aluraAutoRestart_' + window.location.hostname;
+    }
+    
+    // Verificar se já existe uma automação rodando
+    if (sessionStorage.getItem(getStorageKey()) === 'true') {
+        console.log('🔄 AUTOMAÇÃO REINICIADA - Continuando...');
+        isAutomationActive = true;
+        setTimeout(executeAutomation, 2000);
+    }
+    
+    // ========== CONFIGURAÇÃO INICIAL ==========
+    function startAutomation() {
+        sessionStorage.setItem(getStorageKey(), 'true');
+        isAutomationActive = true;
+        console.log('🚀 AUTOMAÇÃO INICIADA - Sobreviverá aos recarregamentos!');
+        
+        if (!watermarkInitialized) {
+            initializeWatermark();
+        }
+        
+        executeAutomation();
+    }
+    
+    function stopAutomation() {
+        sessionStorage.setItem(getStorageKey(), 'false');
+        isAutomationActive = false;
+        console.log('🛑 AUTOMAÇÃO PARADA - Não reiniciará mais');
+        
+        // Remover marca d'água
+        const watermark = document.getElementById('alura-auto-watermark');
+        if (watermark) {
+            watermark.remove();
+            watermarkInitialized = false;
+        }
+    }
+    
+    // ========== SISTEMA DE MARCA D'ÁGUA ==========
+    function initializeWatermark() {
+        if (watermarkInitialized) return;
+        
+        const watermark = document.createElement('div');
+        watermark.id = 'alura-auto-watermark';
+        watermark.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            z-index: 999999;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+            user-select: none;
+            text-align: center;
+            min-width: 150px;
+        `;
+        
+        const fpsElement = document.createElement('div');
+        fpsElement.id = 'watermark-fps';
+        fpsElement.style.cssText = 'margin-bottom: 5px; font-weight: bold;';
+        fpsElement.textContent = 'FPS: 0';
+        
+        const msElement = document.createElement('div');
+        msElement.id = 'watermark-ms';
+        msElement.style.cssText = 'margin-bottom: 5px;';
+        msElement.textContent = 'MS: 0';
+        
+        const statusElement = document.createElement('div');
+        statusElement.id = 'watermark-status';
+        statusElement.style.cssText = 'color: #28a745; font-size: 11px; font-weight: bold;';
+        statusElement.textContent = '✅ AUTOMAÇÃO ATIVA';
+        
+        watermark.appendChild(fpsElement);
+        watermark.appendChild(msElement);
+        watermark.appendChild(statusElement);
+        document.body.appendChild(watermark);
+        
+        watermarkInitialized = true;
+        console.log('💧 Marca d\'água inicializada');
+        
+        // Iniciar loop de atualização
+        updateWatermarkStats();
+    }
+    
+    function updateWatermarkStats() {
+        if (!watermarkInitialized) return;
+        
+        frameCount++;
+        const currentTime = performance.now();
+        const deltaTime = currentTime - lastTime;
+        
+        if (deltaTime >= 1000) {
+            fps = Math.round((frameCount * 1000) / deltaTime);
+            ms = deltaTime / frameCount;
+            
+            const fpsElement = document.getElementById('watermark-fps');
+            const msElement = document.getElementById('watermark-ms');
+            
+            if (fpsElement) fpsElement.textContent = `FPS: ${fps}`;
+            if (msElement) msElement.textContent = `MS: ${Math.round(ms)}`;
+            
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+        
+        requestAnimationFrame(updateWatermarkStats);
     }
     
     // ========== DETECÇÃO DE ATIVIDADE ==========
@@ -34,6 +145,7 @@
             console.log('✅ Play clicado');
         }
         
+        // Aguardar e ir para próxima
         setTimeout(() => {
             goToNextActivity();
         }, 4000);
@@ -164,6 +276,8 @@
     
     // ========== FUNÇÃO PARA PRÓXIMA ATIVIDADE ==========
     function goToNextActivity() {
+        if (!isAutomationActive) return;
+        
         console.log('🔄 Procurando próxima atividade...');
         
         const nextButton = document.querySelector('a.task-actions-button-next, a[href*="/next"]') ||
@@ -172,8 +286,8 @@
         
         if (nextButton) {
             console.log('✅ Indo para próxima atividade...');
-            // Manter a flag ativa ANTES de clicar (importante!)
-            sessionStorage.setItem('aluraAutoRunning', 'true');
+            // Manter a flag ativa antes de clicar
+            sessionStorage.setItem(getStorageKey(), 'true');
             nextButton.click();
         } else {
             console.log('❌ Botão próximo não encontrado, tentando novamente em 5s...');
@@ -183,10 +297,11 @@
     
     // ========== EXECUÇÃO PRINCIPAL ==========
     function executeAutomation() {
-        // Verificar se a automação ainda está ativa
-        if (sessionStorage.getItem('aluraAutoRunning') !== 'true') {
-            console.log('🛑 AUTOMAÇÃO PARADA - Não continuando');
-            return;
+        if (!isAutomationActive) return;
+        
+        // Inicializar marca d'água se ainda não foi
+        if (!watermarkInitialized) {
+            initializeWatermark();
         }
         
         const activityType = detectActivityType();
@@ -205,34 +320,55 @@
         }
     }
     
-    // ========== CONTROLES ==========
-    window.startAlurexAutomation = function() {
-        sessionStorage.setItem('aluraAutoRunning', 'true');
-        console.log('🚀 INICIANDO AUTOMAÇÃO');
-        executeAutomation();
+// ========== COMUNICAÇÃO COM POPUP ==========
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    console.log('📩 Mensagem recebida:', request.action);
+    
+    switch(request.action) {
+        case "startAutomation":
+            startAutomation();
+            sendResponse({success: true, status: "started"});
+            break;
+            
+        case "stopAutomation":
+            stopAutomation();
+            sendResponse({success: true, status: "stopped"});
+            break;
+            
+        case "getStatus":
+            sendResponse({
+                isActive: isAutomationActive,
+                hasWatermark: watermarkInitialized
+            });
+            break;
+            
+        default:
+            sendResponse({success: false, error: "Ação desconhecida"});
     }
     
-    window.stopAlurexAutomation = function() {
-        sessionStorage.setItem('aluraAutoRunning', 'false');
-        console.log('🛑 AUTOMAÇÃO PARADA - Não reiniciará mais');
-        alert('Alurex parado! Recarregue a página para reiniciar.');
-    }
+    return true; // Mantém o canal aberto para resposta assíncrona
+});    
+    // ========== CONTROLES GLOBAIS (para debug) ==========
+    window.startAluraAutomation = startAutomation;
+    window.stopAluraAutomation = stopAutomation;
     
-    // ========== INICIAR AUTOMATICAMENTE ==========
+    // ========== INICIAR AUTOMATICAMENTE SE CONFIGURADO ==========
     console.log(`
-🎮 ALUREX AUTOMATION CARREGADO!
+🎮 EXTENSÃO ALURA AUTOMAÇÃO CARREGADA!
 
-Comandos:
-• startAlurexAutomation() - Iniciar/Continuar
-• stopAlurexAutomation() - Parar completamente
+Comandos no console:
+• startAluraAutomation() - Iniciar
+• stopAluraAutomation() - Parar
 
-Status: ${isRunning ? 'CONTINUANDO' : 'INICIANDO'}
+Ou use o popup da extensão!
     `);
     
-    // Iniciar automaticamente se ainda estiver ativo
-    if (sessionStorage.getItem('aluraAutoRunning') === 'true') {
-        console.log('🔄 Continuando automação após recarregamento...');
-        setTimeout(executeAutomation, 2000);
+    // Iniciar automaticamente se estava ativo antes do recarregamento
+    if (sessionStorage.getItem(getStorageKey()) === 'true') {
+        isAutomationActive = true;
+        setTimeout(() => {
+            executeAutomation();
+        }, 2000);
     }
     
 })();

@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Automação Alura Auto-Reiniciante",
+  "version": "1.0",
+  "description": "Automação para cursos da Alura com sistema auto-reiniciante",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://cursos.alura.com.br/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://cursos.alura.com.br/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Controle da Automação Alura"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
