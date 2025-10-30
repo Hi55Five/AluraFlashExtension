@@ -17,7 +17,7 @@
 A AluraFlash é uma extensão para Chrome que automatiza a conclusão de cursos na plataforma Alura. Desenvolvida com JavaScript puro, ela identifica e completa automaticamente diferentes tipos de atividades enquanto você foca no que realmente importa.
 
 # ✨ Funcionalidades #
-**🎯 Tipos de Atividades Suportadas
+** 🎯 Tipos de Atividades Suportadas
 *📹 Vídeos - Reproduz automaticamente e avança
 *🔘 Múltipla Escolha - Seleciona todas as alternativas
 *🧩 Ordenar Blocos - Decodifica e ordena corretamente
@@ -56,6 +56,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 * ⭐ Se este projeto foi útil para você, deixe uma estrela no repositório! *
 
 ## Feliz automação! 🚀🎯 ##
+
 
 
 
